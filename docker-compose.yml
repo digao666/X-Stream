@@ -1,0 +1,50 @@
+version: "2"
+services:
+  app:
+    container_name: 3495_project1_app_1
+    build: ./app
+    depends_on:
+       - db
+       - fs
+    ports:
+      - "5000:5000"
+  db:
+    container_name: 3495_project1_db_1
+    build: ./db
+    ports:
+      - "32000:3306"
+    volumes:
+      - db_data:/metadata
+  
+  fs:
+    container_name: 3495_project1_fs_1
+    build: ./fs
+    ports:
+      - "5001:5000"
+    volumes:
+      - fs_data:/videos
+  
+  auth:
+    container_name: 3495_project1_auth_1
+    build: ./auth
+    ports:
+      - "5002:5000"
+
+  upload:
+    container_name: 3495_project1_upload_1
+    build: ./upload
+    depends_on:
+       - db
+       - fs
+    ports:
+      - "5003:5000"
+  
+  nginx:
+    container_name: 3495_project1_nginx_1
+    build: ./nginx
+    ports:
+      - "80:80"
+volumes:
+    db_data: {}
+    fs_data: {}
+    
